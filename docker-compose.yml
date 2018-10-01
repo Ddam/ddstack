@@ -1,0 +1,205 @@
+version: '3.7'
+
+services:
+  # Web
+  traefik:
+    container_name: ${COMPOSE_PROJECT_NAME}_traefik
+    build:
+      context: traefik
+      args:
+        - TRAEFIK_VERSION=${TRAEFIK_VERSION}
+    command: --api
+      --api.entrypoint=traefik
+      --api.dashboard=true
+      --docker
+      --docker.domain=dev
+      --logLevel=${TRAEFIK_LOG_LEVEL}
+      --defaultEntryPoints='http,https'
+      --entryPoints='Name:http Address::80'
+      --entryPoints='Name:https Address::443 TLS:/ssl/certs/traefik.cert.pem,/ssl/private/traefik.key.pem'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik/ssl/certs:/ssl/certs
+      - ./traefik/ssl/private:/ssl/private
+    ports:
+      - "80:80"
+      - "443:443"
+      - "14500:14500"
+    labels:
+      - "traefik.backend=${COMPOSE_PROJECT_NAME}.traefik"
+      - 'traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.traefik.docker'
+      - 'traefik.port=8080'
+      - "traefik.frontend.passHostHeader=true"
+
+  # Docker
+  portainer:
+    image: portainer/portainer:${PORTAINER_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_portainer
+    command: -H unix:///var/run/docker.sock
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    labels:
+      - "traefik.backend=${COMPOSE_PROJECT_NAME}portainer"
+      - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.portainer.docker"
+      - "traefik.port=9000"
+      - "traefik.frontend.passHostHeader=true"
+
+  wireshark:
+    image: ffeldhaus/wireshark:${WIRESHARK_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_wireshark
+    privileged: true
+    network_mode: "service:traefik"
+    depends_on:
+      - traefik
+    environment:
+      - XPRA_PW=${WIRESHARK_PASSWORD}
+    labels:
+      - "traefik.backend=${COMPOSE_PROJECT_NAME}.wireshark"
+      - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.wireshark.docker"
+      - "traefik.port=14500"
+      - "traefik.frontend.passHostHeader=true"
+      - "traefik.frontend.headers.SSLRedirect=true"
+
+  # SQL
+  mysql:
+    image: percona:${MYSQL_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_mysql
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    healthcheck:
+      test: mysql --user=root --password=${MYSQL_ROOT_PASSWORD} --execute "show databases"
+      interval: 5s
+      timeout:  1s
+      retries:  3
+    ports:
+      - 3306:3306
+
+  adminer:
+    image: adminer:${ADMINER_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_adminer
+    labels:
+      - "traefik.backend=${COMPOSE_PROJECT_NAME}.adminer"
+      - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.adminer.docker"
+      - "traefik.port=8080"
+      - "traefik.frontend.passHostHeader=true"
+
+  sqlpad:
+    image: sqlpad/sqlpad:${SQLPAD_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_sqlpad
+    labels:
+      - "traefik.backend=${COMPOSE_PROJECT_NAME}.sqlpad"
+      - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.sqlpad.docker"
+      - "traefik.port=3000"
+      - "traefik.frontend.passHostHeader=true"
+
+  # Redis
+  redis:
+    image: redis:${REDIS_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_redis
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+    labels:
+      - "traefik.enable=false"
+
+  redis-commander:
+    image: rediscommander/redis-commander:${REDIS_COMMANDER_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_redis-commander
+    environment:
+      - REDIS_HOSTS=${REDIS_URI}
+    labels:
+      - "traefik.backend=${COMPOSE_PROJECT_NAME}.redis-commander"
+      - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.redis-commander.docker"
+      - "traefik.port=8081"
+      - "traefik.frontend.passHostHeader=true"
+
+  # ES
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTICSEARCH_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_elasticsearch
+    depends_on:
+      - mysql
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    environment:
+      - "http.host=0.0.0.0"
+      - "transport.host=127.0.0.1"
+      - "xpack.security.enabled=false"
+    ports:
+      - "9200:9200"
+
+  sense:
+    image: s12v/sense:${SENSE_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_sense
+    labels:
+      - "traefik.backend=${COMPOSE_PROJECT_NAME}.sense"
+      - 'traefik.port=5601'
+      - 'traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.sense.docker'
+      - "traefik.frontend.passHostHeader=true"
+
+  # RabbitMQ (Message queuing service)
+  rabbitmq:
+    image: rabbitmq:${RABBITMQ_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_rabbitmq
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
+      - RABBITMQ_VHOST=/
+    labels:
+      - "traefik.backend=${COMPOSE_PROJECT_NAME}.rabbitmq"
+      - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.rabbitmq.docker"
+      - "traefik.port=15672"
+      - "traefik.frontend.passHostHeader=true"
+
+  # Streamsets (ETL)
+  streamsets:
+    image: streamsets/datacollector:${STREAMSETS_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_streamsets
+    volumes:
+      - sdc_data:/data:rw
+    labels:
+      - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.streamsets.docker"
+      - "traefik.port=18630"
+      - "traefik.frontend.passHostHeader=true"
+
+  # Mails
+  mailcatcher:
+    image: schickling/mailcatcher:${MAILCATCHER_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_mailcatcher
+    labels:
+      - "traefik.backend=${COMPOSE_PROJECT_NAME}.mailcatcher"
+      - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.mailcatcher.docker"
+      - "traefik.port=1080"
+      - "traefik.frontend.passHostHeader=true"
+
+  sftp-server:
+    image: atmoz/sftp:${SFTP_SERVER_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_sftp-server
+    volumes:
+      - ./ftp/etc/sftp.d/fix-permissions.sh:/etc/sftp.d/fix-permissions
+      - ./ftp/upload:/home/ftp/upload
+    command: ${FTP_USER}:${FTP_PASSWORD}:1001
+    ports:
+      - "${FTP_PORT}:22"
+    labels:
+      - "traefik.enable=false"
+
+volumes:
+  portainer_data:
+    driver: local
+  elasticsearch_data:
+    driver: local
+  mysql_data:
+    driver: local
+  sdc_data:
+    driver: local
+  rabbitmq_data:
+    driver: local
+
+networks:
+  default:
+    external:
+      name: traefik

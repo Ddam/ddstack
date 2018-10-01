@@ -1,0 +1,6 @@
+.env
+docker-compose.override.yml
+traefik/ssl/*
+!traefik/ssl/certs/.gitkeep
+!traefik/ssl/private/.gitkeep
+ftp/upload
