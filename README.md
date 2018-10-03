@@ -40,7 +40,20 @@ cp .env.dist .env
 ```shell
 # Create traefik network if needed
 docker network create traefik
-docker-compose up -d
+make build
+make up
+```
+
+- Start and stop services independently 
+```shell
+# Build service
+make build service=<service_name>
+# Up service
+make up service=<service_name>
+# Stop service
+make stop service=<service_name>
+# Down service and remove volume
+make down service=<service_name>
 ```
 
 ## Frontends
@@ -119,8 +132,8 @@ A test file is placed in the data folder, it contains an item that will be multi
 You can also use your own file, following the template in the file `redis/data/default.txt`.
 
 ```shell
-# docker-compose exec -T --user=root redis mass_insertion <source_file> <number_multiplier>
-docker-compose exec -T --user=root redis mass_insertion default.txt 500
+# make redis_import_data args="<source_file> <number_multiplier>"
+make redis_import_data args="default.txt 500"
 ```
 
 ### Redis - Benchmark mode
@@ -128,8 +141,8 @@ docker-compose exec -T --user=root redis mass_insertion default.txt 500
 Launch benchmark :
 
 ```shell
-# docker-compose exec -T --user=root redis-memtier_benchmark /opt/memtier_benchmark [-h <host>] [-p <port>] [-c <clients>] [-n <requests]> [-k <boolean>]
-docker-compose exec -T --user=root redis-memtier_benchmark /opt/memtier_benchmark -n 1000
+# make redis_memtier_benchmark options="[-h <host>] [-p <port>] [-c <clients>] [-n <requests]> [-k <boolean>]"
+make redis_memtier_benchmark options="-n 1000"
 ```
 
 ### Adminer - Themes
