@@ -1,0 +1,1 @@
+SET items:%d: '{"id": 1, "uid": "7a27c564-c64c-11e8-a355-529269fb1459", "1538489220": "153053530", "sku": "1", "title": "My awesome item", "title_short": "My item"}'

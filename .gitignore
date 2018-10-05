@@ -4,3 +4,6 @@ traefik/ssl/*
 !traefik/ssl/certs/.gitkeep
 !traefik/ssl/private/.gitkeep
 ftp/upload
+redis/data/*
+!redis/data/
+!redis/data/default.txt

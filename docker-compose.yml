@@ -97,8 +97,14 @@ services:
 
   # Redis
   redis:
-    image: redis:${REDIS_VERSION}
     container_name: ${COMPOSE_PROJECT_NAME}_redis
+    build:
+      context: ./redis
+      args:
+        - REDIS_VERSION=${REDIS_VERSION}
+        - REDIS_PASSWORD=${REDIS_PASSWORD}
+    volumes:
+      - ./redis/data:/data
     command: redis-server --requirepass ${REDIS_PASSWORD}
     labels:
       - "traefik.enable=false"

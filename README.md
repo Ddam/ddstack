@@ -112,6 +112,17 @@ To connect to the server, with filezilla for example :
 - **password :** password in env file
 - **port :** port in env file
 
+### Redis - Mass Insertion
+
+A command was specially designed to import data into the redis (container name : redis), to then test the performance of redis with the benchmark mode.
+A test file is placed in the data folder, it contains an item that will be multiplied "n" times by the import command.
+You can also use your own file, following the template in the file `redis/data/default.txt`.
+
+```shell
+# docker-compose exec -T --user=root redis mass_insertion <source_file> <number_multiplier>
+docker-compose exec -T --user=root redis mass_insertion default.txt 500
+```
+
 ### Adminer - Themes
 
 The image bundles all the designs that are available in the source package of adminer. 
