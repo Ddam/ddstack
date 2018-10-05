@@ -81,6 +81,7 @@ services:
     restart: always
 ```
 - Add HTTPS to traefik
+- Change the Adminer theme
 
 ### Traefik
 
@@ -110,3 +111,16 @@ To connect to the server, with filezilla for example :
 - **login :** login in env file
 - **password :** password in env file
 - **port :** port in env file
+
+### Adminer - Themes
+
+The image bundles all the designs that are available in the source package of adminer. 
+You can find the [list of designs](https://github.com/vrana/adminer/tree/master/designs) on GitHub.
+
+To change theme, just add the following entry in your `docker-compose.override.yml` file and change the value of ADMINER_DESIGN variable.
+
+```yaml
+  adminer:
+    environment:
+      - ADMINER_DESIGN=rmsoft
+```

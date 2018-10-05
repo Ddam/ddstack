@@ -6,3 +6,7 @@ services:
 
   traefik:
     restart: always
+
+  adminer:
+    environment:
+      - ADMINER_DESIGN=rmsoft
