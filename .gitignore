@@ -7,3 +7,4 @@ storage/ftp/upload
 storage/redis/data/*
 !storage/redis/data/
 !storage/redis/data/default.txt
+devops/portus/config/config.yml

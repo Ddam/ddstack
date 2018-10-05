@@ -1,0 +1,25 @@
+version: 0.1
+log:
+  fields:
+    service: registry
+storage:
+  filesystem:
+    rootdirectory: /var/lib/registry
+http:
+  addr: docker-registry:5001
+  host: https://docker-registry.127.0.0.1.xip.io
+  relativeurls: false
+  tls:
+    certificate: /etc/ssl/certs/portus.cert.pem
+    key: /etc/ssl/certs/portus.key.pem
+  debug:
+    addr: docker-registry:5002
+  headers:
+    X-Content-Type-Options: [nosniff]
+  http2:
+    disabled: false
+health:
+  storagedriver:
+    enabled: true
+    interval: 10s
+    threshold: 3

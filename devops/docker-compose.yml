@@ -22,6 +22,8 @@ services:
       args:
         - JENKINS_VERSION=${JENKINS_VERSION}
     volumes:
+      - ~/.ssh/id_rsa:/var/jenkins_home/.ssh/id_rsa
+      - /var/run/docker.sock:/var/run/docker.sock
       - jenkins_data:/var/jenkins_home
     environment:
       - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
@@ -35,10 +37,64 @@ services:
       - "traefik.port=8080"
       - "traefik.frontend.passHostHeader=true"
 
+  portus:
+    image: opensuse/portus:${PORTUS_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_portus
+    depends_on:
+      - mysql
+    volumes:
+      - ./portus/config/config.yml:/srv/Portus/config/config.yml
+    environment:
+      - PORTUS_SECRET_KEY_BASE=${PORTUS_SECRET_KEY_BASE}
+      - PORTUS_KEY_PATH=./certs/portus.cert.pem
+      - PORTUS_PASSWORD=${PORTUS_PASSWORD}
+      - PORTUS_DB_HOST=${PORTUS_DB_HOST}
+      - PORTUS_DB_USERNAME=${PORTUS_DB_USERNAME}
+      - PORTUS_DB_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - PORTUS_DB_DATABASE=${PORTUS_DB_DATABASE}
+      - PORTUS_MACHINE_FQDN_VALUE=docker-registry.docker
+      - RAILS_SERVE_STATIC_FILES=true
+    labels:
+      - "traefik.backend=${COMPOSE_PROJECT_NAME}.portus"
+      - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.portus.docker"
+      - "traefik.port=3000"
+      - "traefik.frontend.passHostHeader=true"
+      - "traefik.frontend.headers.SSLRedirect=true"
+
+  docker-registry:
+    image: registry:${DOCKER_REGISTRY_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_docker-registry
+    depends_on:
+      - redis
+    volumes:
+      - ./docker-registry/config/config.yml:/etc/docker/registry/config.yml
+      - ./certs:/etc/ssl/certs:ro
+      - docker-registry_data:/var/lib/registry
+    environment:
+      - REGISTRY_AUTH_TOKEN_REALM=https://docker-registry.docker/portus/v2/token
+      - REGISTRY_AUTH_TOKEN_SERVICE=docker-registry.docker
+      - REGISTRY_AUTH_TOKEN_ISSUER=docker-registry.docker
+      - REGISTRY_AUTH_TOKEN_ROOTCERTBUNDLE=/etc/ssl/certs/portus.cert.pem
+      - REGISTRY_HTTP_SECRET=${REGISTRY_HTTP_SECRET}
+      - REGISTRY_STORAGE_CACHE_BLOBDESCRIPTOR=redis
+      - REGISTRY_REDIS_ADDR=${REGISTRY_REDIS_ADDR}
+      - REGISTRY_STORAGE_DELETE_ENABLED=true
+    ports:
+      - "5001:5000"
+      - "5002:5002"
+    labels:
+      - "traefik.backend=${COMPOSE_PROJECT_NAME}.docker-registry"
+      - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.docker-registry.docker"
+      - "traefik.port=5001"
+      - "traefik.frontend.passHostHeader=true"
+      - "traefik.frontend.headers.SSLRedirect=true"
+
 volumes:
   portainer_data:
     driver: local
   jenkins_data:
+    driver: local
+  docker-registry_data:
     driver: local
 
 networks:
