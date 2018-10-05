@@ -120,6 +120,15 @@ services:
       - "traefik.port=8081"
       - "traefik.frontend.passHostHeader=true"
 
+  redis-memtier_benchmark:
+    container_name: ${COMPOSE_PROJECT_NAME}_redis-memtier_benchmark
+    build:
+      context: ./redis-memtier_benchmark
+      args:
+        - REDIS_MEMTIER_VERSION=${REDIS_MEMTIER_VERSION}
+        - REDIS_SERVER=${REDIS_SERVER}
+        - REDIS_PASSWORD=${REDIS_PASSWORD}
+
   # ES
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTICSEARCH_VERSION}

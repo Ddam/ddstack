@@ -123,6 +123,15 @@ You can also use your own file, following the template in the file `redis/data/d
 docker-compose exec -T --user=root redis mass_insertion default.txt 500
 ```
 
+### Redis - Benchmark mode
+
+Launch benchmark :
+
+```shell
+# docker-compose exec -T --user=root redis-memtier_benchmark /opt/memtier_benchmark [-h <host>] [-p <port>] [-c <clients>] [-n <requests]> [-k <boolean>]
+docker-compose exec -T --user=root redis-memtier_benchmark /opt/memtier_benchmark -n 1000
+```
+
 ### Adminer - Themes
 
 The image bundles all the designs that are available in the source package of adminer. 
