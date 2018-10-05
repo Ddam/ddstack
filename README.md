@@ -25,6 +25,7 @@ Stack of tools for development.
 - [Streamsets](https://streamsets.com/)
 - [SFTP Server](https://hub.docker.com/r/atmoz/sftp/)
 - [Mailcatcher](https://mailcatcher.me/)
+- [Jenkins (PHP Docker build)](https://jenkins.io/)
 
 ## Installation / Setup
 
@@ -71,6 +72,7 @@ Here are the different urls to the services (with COMPOSE_PROJECT_NAME variable 
 - http://local.rabbitmq.docker
 - http://local.streamsets.docker
 - http://local.mailcatcher.docker
+- http://local.jenkins.docker
 
 ## Use
 
@@ -157,3 +159,13 @@ To change theme, just add the following entry in your `docker-compose.override.y
     environment:
       - ADMINER_DESIGN=rmsoft
 ```
+
+### Jenkins
+
+The Jenkins provided here is specially configured to run PHP Docker jobs. However it is also possible to configure it for another stack, by installing necessary plugins.
+
+##### Plugins
+
+The list of installed plugins can be found in the file `jenkins/ref/plugin.txt`, they are needed for PHP Docker builds.
+You can also use your own plugins, by placing list of plugin ids you want to install.  
+You can configure them by adding the corresponding `.groovy` file in the` jenkins/ref/init.groovy.d` folder (following the template in other files).

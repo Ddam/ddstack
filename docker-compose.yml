@@ -202,6 +202,26 @@ services:
     labels:
       - "traefik.enable=false"
 
+  jenkins:
+    container_name: ${COMPOSE_PROJECT_NAME}_jenkins
+    build:
+      context: jenkins
+      args:
+        - JENKINS_VERSION=${JENKINS_VERSION}
+    volumes:
+      - jenkins_data:/var/jenkins_home
+    environment:
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
+      - JENKINS_USER=${JENKINS_USER}
+      - JENKINS_PASSWORD=${JENKINS_PASSWORD}
+    ports:
+      - "5000:5000"
+    labels:
+      - "traefik.backend=${COMPOSE_PROJECT_NAME}.jenkins"
+      - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.jenkins.docker"
+      - "traefik.port=8080"
+      - "traefik.frontend.passHostHeader=true"
+
 volumes:
   portainer_data:
     driver: local
@@ -212,6 +232,8 @@ volumes:
   sdc_data:
     driver: local
   rabbitmq_data:
+    driver: local
+  jenkins_data:
     driver: local
 
 networks:
