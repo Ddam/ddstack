@@ -1,11 +1,11 @@
 version: '3.7'
 
 services:
-  portainer:
-    restart: always
-
-  traefik:
-    restart: always
+#  portainer:
+#    restart: always
+#
+#  traefik:
+#    restart: always
 
   adminer:
     environment:

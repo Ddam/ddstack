@@ -1,171 +1,115 @@
-# Devtools
+
+# Devtools - Docker Stacks
+
+Here are some stacks of development made in Docker. Rather Web oriented she can help during the development of a Web project :)
 
 ## Dependencies
 
 - [Docker 18.06.1](https://docs.docker.com/install/)
 - [Docker Compose 1.22.0 (v3.7)](https://docs.docker.com/compose/)
-- [OpenSSL](https://www.openssl.org/)
 
 ## Description
 
-Stack of tools for development.
+In this stacks, Traefik is used as a reverse proxy in order to be able to browse the different web applications. You will find below, the different urls of each service (with COMPOSE_PROJECT_NAME variable set to local). Add them to your favorites in your favorite browser ;)
 
-- [Portainer](https://portainer.io/)
-- [Traefik](https://traefik.io/)
-- [Wireshark](https://www.wireshark.org/)
-- [Mysql](https://www.mysql.com/fr/)
-- [Adminer](https://www.adminer.org/)
-- [SQLPad](https://rickbergfalk.github.io/sqlpad/)
-- [ElasticSearch](https://www.elastic.co/fr/products/elasticsearch)
-- [Sense](https://www.elastic.co/guide/en/sense/current/sense-ui.html)
-- [RabbitMQ](https://www.rabbitmq.com/)
-- [Redis](https://redis.io/)
-- [Redis Commander](https://joeferner.github.io/redis-commander/)
-- [Redis Memtier Benchmark](https://redis.io/topics/benchmarks)
-- [Streamsets](https://streamsets.com/)
-- [SFTP Server](https://hub.docker.com/r/atmoz/sftp/)
-- [Mailcatcher](https://mailcatcher.me/)
-- [Jenkins (PHP Docker build)](https://jenkins.io/)
+### Traefik
+
+| Service | Name | Frontend | Description |
+|:--------|:-----|:---------|:------------|
+| [Traefik](https://traefik.io/) | traefik | http://local.traefik.docker/ | Traefik is an HTTP / HTTPS reverse proxy and a load-balancer for the purpose of easily deploying microservices. |
+
+### Devops Stack
+
+| Service | Name | Frontend | Description |
+|:--------|:-----|:---------|:------------|
+| [Portainer](https://portainer.io/) | portainer | http://local.portainer.docker/ | Portainer is an open-source lightweight management ui which allows you to easily manage your docker hosts or swarm clusters. |
+| [Jenkins (PHP Docker build)](https://jenkins.io/) | jenkins | http://local.jenkins.docker/ | As an extensible automation server, Jenkins can be used as a simple CI server or turned into the continuous delivery hub for any project. |
+ 
+### Storage Stack
+
+| Service | Name | Frontend | Description |
+|:--------|:-----|:---------|:------------|
+| [Mysql](https://www.mysql.com/fr/) | mysql | - | MySQL is an open-source relational database management system (RDBMS). |
+| [Adminer](https://www.adminer.org/) | adminer | http://local.adminer.docker/ | Adminer is a full-featured database management tool written in PHP. |
+| [SQLPad](https://rickbergfalk.github.io/sqlpad/) | sqlpad | http://local.sqlpad.docker/ | SQLPad is a self-hosted web app for writing and running SQL queries and visualizing the results. |
+| [Redis](https://redis.io/) | redis | - | Redis is an open source (BSD licensed), in-memory data structure store, used as a database, cache and message broker. |
+| [Redis Commander](https://joeferner.github.io/redis-commander/) | redis_commander | http://local.redis-commander.docker/ | Redis-Commander is a node.js web application used to view, edit, and manage a Redis Database. |
+| [Redis Memtier Benchmark](https://redis.io/topics/benchmarks) | redis-memtier_benchmark | - | Redis includes the redis-benchmark utility that simulates running commands done by N clients at the same time sending M total queries (it is similar to the Apache's ab utility). |
+| [ElasticSearch](https://www.elastic.co/fr/products/elasticsearch) | elasticsearch | - | Elasticsearch is a distributed, RESTful search and analytics engine capable of solving a growing number of use cases. |
+| [Sense](https://www.elastic.co/guide/en/sense/current/sense-ui.html) | sense | http://local.sense.docker/app/sense/ | Sense is a Kibana app. The editor allows writing multiple requests below each other and running it. |
+| [SFTP Server](https://hub.docker.com/r/atmoz/sftp/) | sftp-server | - | SFTP server. |
+
+### Dataflow Stack
+
+| Service | Name | Frontend | Description |
+|:--------|:-----|:---------|:------------|
+| [RabbitMQ](https://www.rabbitmq.com/) | rabbitmq | http://local.rabbitmq.docker/ | RabbitMQ is an open source message agent software that implements the Advanced Message Queuing protocol, but also with Streaming Text Oriented Messaging Protocol and Message Queuing Telemetry Transport plugins. |
+| [Streamsets](https://streamsets.com/) | streamsets | http://local.mailcatcher.docker/ | The StreamSets DataOps Platform simplifies how to build, execute, operate and protect enterprise data movement architectures. |
+
+### Tool Stack
+
+| Service | Name | Frontend | Description |
+|:--------|:-----|:---------|:------------|
+| [Wireshark](https://www.wireshark.org/) | wireshark | https://local.wireshark.docker:14500/ | Wireshark is a free and open source packet analyzer. |
+| [Mailcatcher](https://mailcatcher.me/) | mailcatcher | http://local.mailcatcher.docker/ | MailCatcher runs a super simple SMTP server which catches any message sent to it to display in a web interface. |
 
 ## Installation / Setup
 
 - Copy `.env.dist` file to `.env`
 
-```shell
-cp .env.dist .env
-```
-
+	```bash
+	cp .env.dist .env
+	```
 - You have to edit some variable in `.env` file.
 
 - And then run the docker-compose
-```shell
-# Create traefik network if needed
-docker network create traefik
-make build
-make up
-```
 
-- Start and stop services independently 
-```shell
-# Build service
-make build service=<service_name>
-# Up service
-make up service=<service_name>
-# Stop service
-make stop service=<service_name>
-# Down service and remove volume
-make down service=<service_name>
-```
+	```bash
+	# Create traefik network if needed
+	docker network create traefik
+	make build
+	make up
+	```
+- Start and stop services independently (with COMPOSE_PROJECT_NAME variable set to local)
 
-## Frontends
-
-Traefik is used as a reverse proxy in order to be able to browse the different web applications. Add them to your favorites in your favorite browser ;)
-Here are the different urls to the services (with COMPOSE_PROJECT_NAME variable set to local) :
-
-- http://local.traefik.docker
-- http://local.portainer.docker
-- http://local.wireshark.docker:14500
-- http://local.adminer.docker
-- http://local.sqlpad.docker
-- http://local.redis-commander.docker
-- http://local.sense.docker/app/sense
-- http://local.rabbitmq.docker
-- http://local.streamsets.docker
-- http://local.mailcatcher.docker
-- http://local.jenkins.docker
+	```bash
+	# Build services
+	make build services="<service_name> [<service_name>]"
+	# Up services
+	make up services="<service_name> [<service_name>]"
+	# Stop services
+	make stop services="local_<service_name> [local_<service_name>]"
+	# Down services and remove volumes
+	make down services="local_<service_name> [local_<service_name>]"
+	```
 
 ## Use
 
-### Docker Compose Override
+### First
 
 You can customize all tools, use the file `docker-compose.override.yml`
 
 - Copy `docker-compose.override.yml.dist` file to `docker-compose.override.yml`
-```shell
-cp docker-compose.override.yml.dist docker-compose.override.yml
-```
+
+	```shell
+	cp docker-compose.override.yml.dist docker-compose.override.yml
+	```
 
 Examples :
-
 - Restart some tools at the same time as your system (in my case, traefik & portainer):
-```yaml
-services:
-  traefik:
-    restart: always
-  portainer:
-    restart: always
-```
-- Add HTTPS to traefik
+	```yaml
+	services:
+	  traefik:
+	    restart: always
+	  portainer:
+	    restart: always
+	```
 - Change the Adminer theme
 
-### Traefik
+### Documentations
 
-##### General
-
-Traefik is an easy-to-use reverse proxy / load balancer that you can link with your Dockerized projects to have domain names.
-To do this, add the following lines to the container:
-```yaml
-services:
-  my_container:
-    labels:
-      - "traefik.backend=my_container"
-      - "traefik.frontend.rule=Host:my_container.${HOST_IP}.xip.io"
-      - "traefik.port=8080"
-      - "traefik.frontend.passHostHeader=true"
-```
-
-##### HTTPS
-
-A self-signed certificate is generated in the container during the first installation, the https is available on all services.
-
-### SFTP Server
-
-To connect to the server, with filezilla for example :
-
-- **host :** sftp://localhost
-- **login :** login in env file
-- **password :** password in env file
-- **port :** port in env file
-
-### Redis - Mass Insertion
-
-A command was specially designed to import data into the redis (container name : redis), to then test the performance of redis with the benchmark mode.
-A test file is placed in the data folder, it contains an item that will be multiplied "n" times by the import command.
-You can also use your own file, following the template in the file `redis/data/default.txt`.
-
-```shell
-# make redis_import_data args="<source_file> <number_multiplier>"
-make redis_import_data args="default.txt 500"
-```
-
-### Redis - Benchmark mode
-
-Launch benchmark :
-
-```shell
-# make redis_memtier_benchmark options="[-h <host>] [-p <port>] [-c <clients>] [-n <requests]> [-k <boolean>]"
-make redis_memtier_benchmark options="-n 1000"
-```
-
-### Adminer - Themes
-
-The image bundles all the designs that are available in the source package of adminer. 
-You can find the [list of designs](https://github.com/vrana/adminer/tree/master/designs) on GitHub.
-
-To change theme, just add the following entry in your `docker-compose.override.yml` file and change the value of ADMINER_DESIGN variable.
-
-```yaml
-  adminer:
-    environment:
-      - ADMINER_DESIGN=rmsoft
-```
-
-### Jenkins
-
-The Jenkins provided here is specially configured to run PHP Docker jobs. However it is also possible to configure it for another stack, by installing necessary plugins.
-
-##### Plugins
-
-The list of installed plugins can be found in the file `jenkins/ref/plugin.txt`, they are needed for PHP Docker builds.
-You can also use your own plugins, by placing list of plugin ids you want to install.  
-You can configure them by adding the corresponding `.groovy` file in the` jenkins/ref/init.groovy.d` folder (following the template in other files).
+- [Traefik](doc/traefik.md)
+- [Devops Stack](doc/devops.md)
+- [Storage Stack](doc/storage.md)
+- [Dataflow Stack](doc/dataflow.md)
+- [Tool Stack](doc/tool.md)

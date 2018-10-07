@@ -3,7 +3,7 @@ docker-compose.override.yml
 traefik/ssl/*
 !traefik/ssl/certs/.gitkeep
 !traefik/ssl/private/.gitkeep
-ftp/upload
-redis/data/*
-!redis/data/
-!redis/data/default.txt
+storage/ftp/upload
+storage/redis/data/*
+!storage/redis/data/
+!storage/redis/data/default.txt

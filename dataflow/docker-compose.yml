@@ -1,0 +1,41 @@
+version: '3.7'
+
+services:
+  # RabbitMQ (Message queuing service)
+  rabbitmq:
+    image: rabbitmq:${RABBITMQ_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_rabbitmq
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
+      - RABBITMQ_VHOST=/
+    labels:
+      - "traefik.backend=${COMPOSE_PROJECT_NAME}.rabbitmq"
+      - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.rabbitmq.docker"
+      - "traefik.port=15672"
+      - "traefik.frontend.passHostHeader=true"
+
+  # Streamsets (ETL)
+  streamsets:
+    image: streamsets/datacollector:${STREAMSETS_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_streamsets
+    volumes:
+      - sdc_data:/data:rw
+    labels:
+      - "traefik.backend=${COMPOSE_PROJECT_NAME}.streamsets"
+      - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.streamsets.docker"
+      - "traefik.port=18630"
+      - "traefik.frontend.passHostHeader=true"
+
+volumes:
+  rabbitmq_data:
+    driver: local
+  sdc_data:
+    driver: local
+
+networks:
+  default:
+    external:
+      name: traefik

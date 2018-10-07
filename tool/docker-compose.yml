@@ -1,0 +1,38 @@
+version: '3.7'
+
+services:
+  # Network sniffing
+  wireshark:
+    image: ffeldhaus/wireshark:${WIRESHARK_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_wireshark
+    privileged: true
+    network_mode: "service:traefik"
+    depends_on:
+      - traefik
+    environment:
+      - XPRA_PW=${WIRESHARK_PASSWORD}
+    labels:
+      - "traefik.backend=${COMPOSE_PROJECT_NAME}.wireshark"
+      - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.wireshark.docker"
+      - "traefik.port=14500"
+      - "traefik.frontend.passHostHeader=true"
+      - "traefik.frontend.headers.SSLRedirect=true"
+
+  # Mails
+  mailcatcher:
+    image: schickling/mailcatcher:${MAILCATCHER_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_mailcatcher
+    labels:
+      - "traefik.backend=${COMPOSE_PROJECT_NAME}.mailcatcher"
+      - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.mailcatcher.docker"
+      - "traefik.port=1080"
+      - "traefik.frontend.passHostHeader=true"
+
+volumes:
+  sdc_data:
+    driver: local
+
+networks:
+  default:
+    external:
+      name: traefik
