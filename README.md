@@ -55,10 +55,11 @@ In this stacks, Traefik is used as a reverse proxy in order to be able to browse
 
 ## Installation / Setup
 
-- Copy `.env.dist` file to `.env`
+- Copy all dist file
 
 	```bash
 	cp .env.dist .env
+	cp traefik/conf/traefik.toml.dist traefik/conf/traefik.toml
 	```
 - You have to edit some variable in `.env` file.
 
