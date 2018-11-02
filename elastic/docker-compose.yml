@@ -1,0 +1,64 @@
+version: '3.7'
+
+services:
+  # ES
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTICSEARCH_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_elasticsearch
+    depends_on:
+      - mysql
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    environment:
+      - "http.host=0.0.0.0"
+      - "transport.host=127.0.0.1"
+      - "xpack.security.enabled=false"
+    ports:
+      - 9200:9200
+    labels:
+      - "traefik.enable=false"
+
+  logstash:
+    image: logstash:${LOGSTASH_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_logstash
+    command: -f /usr/share/logstash/pipeline/logstash.conf
+    volumes:
+      - ./elastic/logstash/pipeline/:/usr/share/logstash/pipeline/
+    environment:
+      - TZ=Europe/Paris
+    ports:
+      - 5000:5000
+      - 5000:5000/udp
+    labels:
+      - "traefik.backend=logstash"
+
+  kibana:
+    image: kibana:${KIBANA_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_kibana
+    labels:
+      - "traefik.backend=${COMPOSE_PROJECT_NAME}.kibana"
+      - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.kibana.docker"
+      - "traefik.port=5601"
+      - "traefik.frontend.passHostHeader=true"
+
+  logspout-logstash:
+    image: bekt/logspout-logstash
+    container_name: ${COMPOSE_PROJECT_NAME}_logspout-logstash
+    restart: on-failure
+    depends_on:
+      - logstash
+    environment:
+      - ROUTE_URIS=${LOGSTASH_URI}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - "traefik.enable=false"
+
+volumes:
+  elasticsearch_data:
+    driver: local
+
+networks:
+  default:
+    external:
+      name: traefik

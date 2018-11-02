@@ -1,0 +1,29 @@
+input {
+  udp {
+    port  => 5000
+    codec => json
+  }
+  tcp {
+    port  => 5000
+    codec => json
+  }
+}
+
+filter {
+  if [docker][name] =~ /.*logstash.*/ {
+    drop { }
+  }
+  if [docker][name] =~ /.*traefik.*/ {
+    drop { }
+  }
+  if [docker][name] =~ /.*logspout.*/ {
+    drop { }
+  }
+}
+
+output {
+  elasticsearch {
+    hosts => ["elasticsearch:9200"]
+  }
+  stdout { codec => rubydebug }
+}
