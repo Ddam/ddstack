@@ -5,7 +5,7 @@ services:
   portainer:
     image: portainer/portainer:${PORTAINER_VERSION}
     container_name: ${COMPOSE_PROJECT_NAME}_portainer
-    command: -H unix:///var/run/docker.sock
+    command: -H unix:///var/run/docker.sock --admin-password "${PORTAINER_PASSWORD}"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
