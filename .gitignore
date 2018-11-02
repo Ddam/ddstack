@@ -8,3 +8,5 @@ storage/ftp/upload
 storage/redis/data/*
 !storage/redis/data/
 !storage/redis/data/default.txt
+elastic/logstash/pipeline/logstash.conf
+elastic/logstash/pipeline/logstash.yml

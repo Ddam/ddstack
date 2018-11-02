@@ -35,8 +35,6 @@ In this stacks, Traefik is used as a reverse proxy in order to be able to browse
 | [Redis](https://redis.io/) | redis | - | Redis is an open source (BSD licensed), in-memory data structure store, used as a database, cache and message broker. |
 | [Redis Commander](https://joeferner.github.io/redis-commander/) | redis_commander | http://local.redis-commander.docker/ | Redis-Commander is a node.js web application used to view, edit, and manage a Redis Database. |
 | [Redis Memtier Benchmark](https://redis.io/topics/benchmarks) | redis-memtier_benchmark | - | Redis includes the redis-benchmark utility that simulates running commands done by N clients at the same time sending M total queries (it is similar to the Apache's ab utility). |
-| [ElasticSearch](https://www.elastic.co/fr/products/elasticsearch) | elasticsearch | - | Elasticsearch is a distributed, RESTful search and analytics engine capable of solving a growing number of use cases. |
-| [Sense](https://www.elastic.co/guide/en/sense/current/sense-ui.html) | sense | http://local.sense.docker/app/sense/ | Sense is a Kibana app. The editor allows writing multiple requests below each other and running it. |
 | [SFTP Server](https://hub.docker.com/r/atmoz/sftp/) | sftp-server | - | SFTP server. |
 
 ### Dataflow Stack
@@ -53,6 +51,15 @@ In this stacks, Traefik is used as a reverse proxy in order to be able to browse
 | [Wireshark](https://www.wireshark.org/) | wireshark | https://local.wireshark.docker:14500/ | Wireshark is a free and open source packet analyzer. |
 | [Mailcatcher](https://mailcatcher.me/) | mailcatcher | http://local.mailcatcher.docker/ | MailCatcher runs a super simple SMTP server which catches any message sent to it to display in a web interface. |
 
+### Elastic Stack
+
+| Service | Name | Frontend | Description |
+|:--------|:-----|:---------|:------------|
+| [ElasticSearch](https://www.elastic.co/fr/products/elasticsearch) | elasticsearch | - | Elasticsearch is a distributed, RESTful search and analytics engine capable of solving a growing number of use cases. |
+| [Kibana](https://www.elastic.co/products/kibana/) | kibana | https://local.kibana.docker/ | Kibana lets you visualize your Elasticsearch data and navigate the Elastic Stack. |
+| [Logstash](https://www.elastic.co/products/logstash/) | logstash | - | Logstash is an open source, server-side data processing pipeline that ingests data from a multitude of sources simultaneously. |
+| [Logspout](https://hub.docker.com/r/bekt/logspout-logstash/) | logspout-logstash | - | Logspout is a log router for Docker containers that runs inside Docker. |
+
 ## Installation / Setup
 
 - Copy all dist file
@@ -60,9 +67,10 @@ In this stacks, Traefik is used as a reverse proxy in order to be able to browse
 	```bash
 	cp .env.dist .env
 	cp traefik/conf/traefik.toml.dist traefik/conf/traefik.toml
+	cp elastic/logstash/pipeline/logstash.conf.dist elastic/logstash/pipeline/logstash.conf
+	cp elastic/logstash/pipeline/logstash.yml.dist elastic/logstash/pipeline/logstash.yml
 	```
 - You have to edit some variable in `.env` file.
-
 - And then run the docker-compose
 
 	```bash
@@ -114,3 +122,4 @@ Examples :
 - [Storage Stack](doc/storage.md)
 - [Dataflow Stack](doc/dataflow.md)
 - [Tool Stack](doc/tool.md)
+- [Elastic Stack](doc/elastic.md)

@@ -73,32 +73,6 @@ services:
     labels:
       - "traefik.enable=false"
 
-  # ES
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTICSEARCH_VERSION}
-    container_name: ${COMPOSE_PROJECT_NAME}_elasticsearch
-    depends_on:
-      - mysql
-    volumes:
-      - elasticsearch_data:/usr/share/elasticsearch/data
-    environment:
-      - "http.host=0.0.0.0"
-      - "transport.host=127.0.0.1"
-      - "xpack.security.enabled=false"
-    ports:
-      - 9200:9200
-    labels:
-      - "traefik.enable=false"
-
-  sense:
-    image: s12v/sense:${SENSE_VERSION}
-    container_name: ${COMPOSE_PROJECT_NAME}_sense
-    labels:
-      - "traefik.backend=${COMPOSE_PROJECT_NAME}.sense"
-      - "traefik.port=5601"
-      - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.sense.docker"
-      - "traefik.frontend.passHostHeader=true"
-
   # FTP
   sftp-server:
     image: atmoz/sftp:${SFTP_SERVER_VERSION}
@@ -113,8 +87,6 @@ services:
       - "traefik.enable=false"
 
 volumes:
-  elasticsearch_data:
-    driver: local
   mysql_data:
     driver: local
 
