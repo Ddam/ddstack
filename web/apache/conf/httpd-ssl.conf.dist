@@ -1,0 +1,6 @@
+# OCSP Stapling
+SSLUseStapling          on
+SSLStaplingResponderTimeout 5
+SSLStaplingReturnResponderErrors off
+SSLStaplingCache        shmcb:/var/run/ocsp(128000)
+SSLStaplingCache        shmcb:/var/run/ssl_scache(512000)

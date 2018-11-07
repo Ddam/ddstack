@@ -62,6 +62,12 @@ In this stacks, Traefik is used as a reverse proxy in order to be able to browse
 | [Logstash](https://www.elastic.co/products/logstash/) | logstash | - | Logstash is an open source, server-side data processing pipeline that ingests data from a multitude of sources simultaneously. |
 | [Logspout](https://hub.docker.com/r/bekt/logspout-logstash/) | logspout-logstash | - | Logspout is a log router for Docker containers that runs inside Docker. |
 
+### Web Stack
+
+| Service | Name | Frontend | Description |
+|:--------|:-----|:---------|:------------|
+| [Apache - HTTPD 2.4](https://httpd.apache.org/) | apache | https://local.apache.docker/ | The Apache HTTP Server, colloquially called Apache, is free and open-source cross-platform web server software. |
+
 ## Installation / Setup
 
 - Copy all dist file
@@ -125,3 +131,4 @@ Examples :
 - [Dataflow Stack](doc/dataflow.md)
 - [Tool Stack](doc/tool.md)
 - [Elastic Stack](doc/elastic.md)
+- [Web Stack](doc/web.md)

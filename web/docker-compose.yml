@@ -1,0 +1,34 @@
+version: '3.7'
+
+services:
+  apache:
+    container_name: ${COMPOSE_PROJECT_NAME}_apache
+    hostname: ${COMPOSE_PROJECT_NAME}-apache
+    build:
+      context: ./web/apache
+      args:
+        - APACHE_VERSION=${APACHE_VERSION}
+    environment:
+      - NAMESERVER=${HTTPD_NAMESERVER}
+      - HTTPD_AUTOSIGNED_CERT=${HTTPD_AUTOSIGNED_CERT}
+      - HTTPD_FPM_MODE=${HTTPD_FPM_MODE}
+      - HTTPD_PHP_FPM_HANDLER=${HTTPD_PHP_FPM_HANDLER}
+      - HTTPD_PORT=${HTTPD_PORT}
+      - HTTPD_LOG_DIR=/usr/local/apache2/logs
+      - HTTPD_SSL_MODE=${HTTPD_SSL_MODE}
+    networks:
+      traefik:
+        aliases:
+          - apache_${COMPOSE_PROJECT_NAME}
+    ports:
+      - 8082:${HTTPD_PORT}
+    labels:
+      - "traefik.backend=${COMPOSE_PROJECT_NAME}.apache"
+      - "traefik.frontend.rule=Host:${HTTPD_NAMESERVER}"
+      - "traefik.port=${HTTPD_PORT}"
+      - "traefik.frontend.passHostHeader=true"
+
+networks:
+  traefik:
+    external:
+      name: traefik

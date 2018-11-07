@@ -11,7 +11,7 @@ services:
       - portainer_data:/data
     labels:
       - "traefik.backend=${COMPOSE_PROJECT_NAME}.portainer"
-      - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.portainer.docker"
+      - "traefik.frontend.rule=Host:portainer.traefik.docker"
       - "traefik.port=9000"
       - "traefik.frontend.passHostHeader=true"
 

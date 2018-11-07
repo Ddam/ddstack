@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+  php:
+    container_name: ${COMPOSE_PROJECT_NAME}_php
+    hostname: ${COMPOSE_PROJECT_NAME}-php
+    build:
+      context: ./dev/php
+      args:
+        - PHP_VERSION=${PHP_VERSION}
+        - COMPOSER_VERSION=${COMPOSER_VERSION}
+    networks:
+      traefik:
+        aliases:
+          - ${HTTPD_PHP_FPM_HANDLER}
+    labels:
+      - "traefik.enable=false"
+
+networks:
+  traefik:
+    external:
+      name: traefik

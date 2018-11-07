@@ -10,3 +10,8 @@ services:
   adminer:
     environment:
       - ADMINER_DESIGN=rmsoft
+
+  php:
+    environment:
+      - APP_ENV=${SYMFONY_APP_ENV}
+      - APP_SECRET=${SYMFONY_APP_SECRET}

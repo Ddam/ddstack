@@ -12,7 +12,7 @@ if traefik "$1" --help | grep -s -q "help"; then
     set -- traefik "$@"
 fi
 
-cd /ssl
+cd /etc/ssl
 if [ ! -e "./certs/traefik.cert.pem" ]; then
 
     SUBJECT="/C=FR/ST=Calvados/L=Caen/O=Project SAS/OU=IT/CN=traefik"

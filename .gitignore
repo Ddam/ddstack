@@ -10,3 +10,13 @@ storage/redis/data/*
 !storage/redis/data/default.txt
 elastic/logstash/pipeline/logstash.conf
 elastic/logstash/pipeline/logstash.yml
+web/apache/ssl/*
+web/apache/conf/httpd.conf
+web/apache/conf/httpd-ssl.conf
+web/apache/conf/httpd-ssl-vhosts.conf
+web/apache/conf/httpd-vhosts.conf
+!web/apache/ssl/openssl.cnf
+!web/apache/ssl/certs/intermediate.cert.pem
+!web/apache/ssl/csr/.gitkeep
+!web/apache/ssl/newcerts/.gitkeep
+!web/apache/ssl/private/intermediate.key.pem
