@@ -10,7 +10,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
     labels:
-      - "traefik.backend=${COMPOSE_PROJECT_NAME}.portainer"
+      - "traefik.enable=true"
       - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.portainer.docker"
       - "traefik.port=9000"
       - "traefik.frontend.passHostHeader=true"
@@ -30,7 +30,7 @@ services:
     ports:
       - 5000:5000
     labels:
-      - "traefik.backend=${COMPOSE_PROJECT_NAME}.jenkins"
+      - "traefik.enable=true"
       - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.jenkins.docker"
       - "traefik.port=8080"
       - "traefik.frontend.passHostHeader=true"

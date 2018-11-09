@@ -12,7 +12,7 @@ services:
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
       - RABBITMQ_VHOST=/
     labels:
-      - "traefik.backend=${COMPOSE_PROJECT_NAME}.rabbitmq"
+      - "traefik.enable=true"
       - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.rabbitmq.docker"
       - "traefik.port=15672"
       - "traefik.frontend.passHostHeader=true"
@@ -24,7 +24,7 @@ services:
     volumes:
       - sdc_data:/data:rw
     labels:
-      - "traefik.backend=${COMPOSE_PROJECT_NAME}.streamsets"
+      - "traefik.enable=true"
       - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.streamsets.docker"
       - "traefik.port=18630"
       - "traefik.frontend.passHostHeader=true"

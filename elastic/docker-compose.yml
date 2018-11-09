@@ -15,8 +15,6 @@ services:
       - "xpack.security.enabled=false"
     ports:
       - 9200:9200
-    labels:
-      - "traefik.enable=false"
 
   logstash:
     image: logstash:${LOGSTASH_VERSION}
@@ -36,7 +34,7 @@ services:
     image: kibana:${KIBANA_VERSION}
     container_name: ${COMPOSE_PROJECT_NAME}_kibana
     labels:
-      - "traefik.backend=${COMPOSE_PROJECT_NAME}.kibana"
+      - "traefik.enable=true"
       - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.kibana.docker"
       - "traefik.port=5601"
       - "traefik.frontend.passHostHeader=true"
@@ -51,8 +49,6 @@ services:
       - ROUTE_URIS=${LOGSTASH_URI}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    labels:
-      - "traefik.enable=false"
 
 volumes:
   elasticsearch_data:

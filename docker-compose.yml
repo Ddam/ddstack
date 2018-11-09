@@ -19,7 +19,7 @@ services:
       - 443:443
       - 14500:14500
     labels:
-      - "traefik.backend=${COMPOSE_PROJECT_NAME}.traefik"
+      - "traefik.enable=true"
       - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.traefik.docker"
       - "traefik.port=8080"
       - "traefik.frontend.passHostHeader=true"
