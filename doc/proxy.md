@@ -27,3 +27,14 @@ address=/.docker/127.0.0.1
 ### HTTPS
 
 A self-signed certificate is generated in the container during the first installation, the https is available on all services.
+
+### Go even further !
+
+It's possible to use its own certificate, for that it is necessary to place the files in the corresponding folders:
+* `proxy/traefik/ssl/ca`
+* `proxy/traefik/ssl/certs`
+* `proxy/traefik/ssl/private`
+
+In this way you will be able to use a certificate signed by your own authority.  
+
+**Help :** [Generate an authority and certificates signed by it](https://jamielinux.com/docs/openssl-certificate-authority/index.html)
