@@ -147,7 +147,7 @@ defaultEntryPoints = ["http", "https"]
   #
   # Optional
   #
-  domain = "docker"
+  domain = "traefik.docker"
 
   # Enable watch docker changes.
   #

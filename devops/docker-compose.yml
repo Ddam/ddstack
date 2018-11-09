@@ -14,9 +14,9 @@ services:
       - ddstack
     labels:
       - "traefik.enable=true"
-      - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.portainer.docker"
+      - "traefik.backend=portainer"
+      - "traefik.frontend.rule=Host:portainer.traefik.docker"
       - "traefik.port=9000"
-      - "traefik.frontend.passHostHeader=true"
 
   jenkins:
     container_name: ${COMPOSE_PROJECT_NAME}_jenkins
@@ -37,9 +37,9 @@ services:
       - ddstack
     labels:
       - "traefik.enable=true"
-      - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.jenkins.docker"
+      - "traefik.backend=jenkins"
+      - "traefik.frontend.rule=Host:jenkins.traefik.docker"
       - "traefik.port=8080"
-      - "traefik.frontend.passHostHeader=true"
 
 volumes:
   portainer_data:

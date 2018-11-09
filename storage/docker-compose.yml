@@ -27,9 +27,9 @@ services:
       - ddstack
     labels:
       - "traefik.enable=true"
-      - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.adminer.docker"
+      - "traefik.backend=adminer"
+      - "traefik.frontend.rule=Host:adminer.traefik.docker"
       - "traefik.port=8080"
-      - "traefik.frontend.passHostHeader=true"
 
   sqlpad:
     image: sqlpad/sqlpad:${SQLPAD_VERSION}
@@ -39,9 +39,9 @@ services:
       - ddstack
     labels:
       - "traefik.enable=true"
-      - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.sqlpad.docker"
+      - "traefik.backend=sqlpad"
+      - "traefik.frontend.rule=Host:sqlpad.traefik.docker"
       - "traefik.port=3000"
-      - "traefik.frontend.passHostHeader=true"
 
   # Redis
   redis:
@@ -67,9 +67,9 @@ services:
       - ddstack
     labels:
       - "traefik.enable=true"
-      - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.redis-commander.docker"
+      - "traefik.backend=redis-commander"
+      - "traefik.frontend.rule=Host:redis-commander.traefik.docker"
       - "traefik.port=8081"
-      - "traefik.frontend.passHostHeader=true"
 
   redis-memtier_benchmark:
     container_name: ${COMPOSE_PROJECT_NAME}_redis-memtier_benchmark

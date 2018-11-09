@@ -16,24 +16,24 @@ In this stacks, Traefik is used as a reverse proxy in order to be able to browse
 
 | Service | Name | Frontend | Description |
 |:--------|:-----|:---------|:------------|
-| [Traefik](https://traefik.io/) | traefik | http://local.traefik.docker/ | Traefik is an HTTP / HTTPS reverse proxy and a load-balancer for the purpose of easily deploying microservices. |
+| [Traefik](https://traefik.io/) | traefik | http://traefik-proxy.traefik.docker/ | Traefik is an HTTP / HTTPS reverse proxy and a load-balancer for the purpose of easily deploying microservices. |
 
 ### Devops Stack
 
 | Service | Name | Frontend | Description |
 |:--------|:-----|:---------|:------------|
-| [Portainer](https://portainer.io/) | portainer | http://local.portainer.docker/ | Portainer is an open-source lightweight management ui which allows you to easily manage your docker hosts or swarm clusters. |
-| [Jenkins (PHP Docker build)](https://jenkins.io/) | jenkins | http://local.jenkins.docker/ | As an extensible automation server, Jenkins can be used as a simple CI server or turned into the continuous delivery hub for any project. |
+| [Portainer](https://portainer.io/) | portainer | http://portainer.traefik.docker/ | Portainer is an open-source lightweight management ui which allows you to easily manage your docker hosts or swarm clusters. |
+| [Jenkins (PHP Docker build)](https://jenkins.io/) | jenkins | http://jenkins.traefik.docker/ | As an extensible automation server, Jenkins can be used as a simple CI server or turned into the continuous delivery hub for any project. |
  
 ### Storage Stack
 
 | Service | Name | Frontend | Description |
 |:--------|:-----|:---------|:------------|
 | [Mysql](https://www.mysql.com/fr/) | mysql | - | MySQL is an open-source relational database management system (RDBMS). |
-| [Adminer](https://www.adminer.org/) | adminer | http://local.adminer.docker/ | Adminer is a full-featured database management tool written in PHP. |
-| [SQLPad](https://rickbergfalk.github.io/sqlpad/) | sqlpad | http://local.sqlpad.docker/ | SQLPad is a self-hosted web app for writing and running SQL queries and visualizing the results. |
+| [Adminer](https://www.adminer.org/) | adminer | http://adminer.traefik.docker/ | Adminer is a full-featured database management tool written in PHP. |
+| [SQLPad](https://rickbergfalk.github.io/sqlpad/) | sqlpad | http://sqlpad.traefik.docker/ | SQLPad is a self-hosted web app for writing and running SQL queries and visualizing the results. |
 | [Redis](https://redis.io/) | redis | - | Redis is an open source (BSD licensed), in-memory data structure store, used as a database, cache and message broker. |
-| [Redis Commander](https://joeferner.github.io/redis-commander/) | redis_commander | http://local.redis-commander.docker/ | Redis-Commander is a node.js web application used to view, edit, and manage a Redis Database. |
+| [Redis Commander](https://joeferner.github.io/redis-commander/) | redis_commander | http://redis-commander.traefik.docker/ | Redis-Commander is a node.js web application used to view, edit, and manage a Redis Database. |
 | [Redis Memtier Benchmark](https://redis.io/topics/benchmarks) | redis-memtier_benchmark | - | Redis includes the redis-benchmark utility that simulates running commands done by N clients at the same time sending M total queries (it is similar to the Apache's ab utility). |
 | [SFTP Server](https://hub.docker.com/r/atmoz/sftp/) | sftp-server | - | SFTP server. |
 
@@ -41,22 +41,22 @@ In this stacks, Traefik is used as a reverse proxy in order to be able to browse
 
 | Service | Name | Frontend | Description |
 |:--------|:-----|:---------|:------------|
-| [RabbitMQ](https://www.rabbitmq.com/) | rabbitmq | http://local.rabbitmq.docker/ | RabbitMQ is an open source message agent software that implements the Advanced Message Queuing protocol, but also with Streaming Text Oriented Messaging Protocol and Message Queuing Telemetry Transport plugins. |
-| [Streamsets](https://streamsets.com/) | streamsets | http://local.mailcatcher.docker/ | The StreamSets DataOps Platform simplifies how to build, execute, operate and protect enterprise data movement architectures. |
+| [RabbitMQ](https://www.rabbitmq.com/) | rabbitmq | http://rabbitmq.traefik.docker/ | RabbitMQ is an open source message agent software that implements the Advanced Message Queuing protocol, but also with Streaming Text Oriented Messaging Protocol and Message Queuing Telemetry Transport plugins. |
+| [Streamsets](https://streamsets.com/) | streamsets | http://mailcatcher.traefik.docker/ | The StreamSets DataOps Platform simplifies how to build, execute, operate and protect enterprise data movement architectures. |
 
 ### Tool Stack
 
 | Service | Name | Frontend | Description |
 |:--------|:-----|:---------|:------------|
-| [Wireshark](https://www.wireshark.org/) | wireshark | https://local.wireshark.docker:14500/ | Wireshark is a free and open source packet analyzer. |
-| [Mailcatcher](https://mailcatcher.me/) | mailcatcher | http://local.mailcatcher.docker/ | MailCatcher runs a super simple SMTP server which catches any message sent to it to display in a web interface. |
+| [Wireshark](https://www.wireshark.org/) | wireshark | https://wireshark.traefik.docker:14500/ | Wireshark is a free and open source packet analyzer. |
+| [Mailcatcher](https://mailcatcher.me/) | mailcatcher | http://mailcatcher.traefik.docker/ | MailCatcher runs a super simple SMTP server which catches any message sent to it to display in a web interface. |
 
 ### Elastic Stack
 
 | Service | Name | Frontend | Description |
 |:--------|:-----|:---------|:------------|
 | [ElasticSearch](https://www.elastic.co/fr/products/elasticsearch) | elasticsearch | - | Elasticsearch is a distributed, RESTful search and analytics engine capable of solving a growing number of use cases. |
-| [Kibana](https://www.elastic.co/products/kibana/) | kibana | https://local.kibana.docker/ | Kibana lets you visualize your Elasticsearch data and navigate the Elastic Stack. |
+| [Kibana](https://www.elastic.co/products/kibana/) | kibana | https://kibana.traefik.docker/ | Kibana lets you visualize your Elasticsearch data and navigate the Elastic Stack. |
 | [Logstash](https://www.elastic.co/products/logstash/) | logstash | - | Logstash is an open source, server-side data processing pipeline that ingests data from a multitude of sources simultaneously. |
 | [Logspout](https://hub.docker.com/r/bekt/logspout-logstash/) | logspout-logstash | - | Logspout is a log router for Docker containers that runs inside Docker. |
 

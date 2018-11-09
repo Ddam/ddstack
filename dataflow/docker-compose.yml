@@ -16,9 +16,9 @@ services:
       - ddstack
     labels:
       - "traefik.enable=true"
-      - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.rabbitmq.docker"
+      - "traefik.backend=rabbitmq"
+      - "traefik.frontend.rule=Host:rabbitmq.traefik.docker"
       - "traefik.port=15672"
-      - "traefik.frontend.passHostHeader=true"
 
   # Streamsets (ETL)
   streamsets:
@@ -31,9 +31,9 @@ services:
       - ddstack
     labels:
       - "traefik.enable=true"
-      - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.streamsets.docker"
+      - "traefik.backend=streamsets"
+      - "traefik.frontend.rule=Host:streamsets.traefik.docker"
       - "traefik.port=18630"
-      - "traefik.frontend.passHostHeader=true"
 
 volumes:
   rabbitmq_data:

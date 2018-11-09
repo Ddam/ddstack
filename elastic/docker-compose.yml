@@ -40,9 +40,9 @@ services:
       - ddstack
     labels:
       - "traefik.enable=true"
-      - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.kibana.docker"
+      - "traefik.backend=kibana"
+      - "traefik.frontend.rule=Host:kibana.traefik.docker"
       - "traefik.port=5601"
-      - "traefik.frontend.passHostHeader=true"
 
   logspout-logstash:
     image: bekt/logspout-logstash

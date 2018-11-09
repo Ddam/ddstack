@@ -13,9 +13,9 @@ services:
       - XPRA_PW=${WIRESHARK_PASSWORD}
     labels:
       - "traefik.enable=true"
-      - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.wireshark.docker"
+      - "traefik.backend=wireshark"
+      - "traefik.frontend.rule=Host:wireshark.traefik.docker"
       - "traefik.port=14500"
-      - "traefik.frontend.passHostHeader=true"
       - "traefik.frontend.headers.SSLRedirect=true"
 
   # Mails
@@ -27,9 +27,9 @@ services:
       - ddstack
     labels:
       - "traefik.enable=true"
-      - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.mailcatcher.docker"
+      - "traefik.backend=mailcatcher"
+      - "traefik.frontend.rule=Host:mailcatcher.traefik.docker"
       - "traefik.port=1080"
-      - "traefik.frontend.passHostHeader=true"
 
 volumes:
   sdc_data:

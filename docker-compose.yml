@@ -23,9 +23,9 @@ services:
       - ddstack
     labels:
       - "traefik.enable=true"
-      - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.traefik.docker"
+      - "traefik.backend=traefik-proxy.traefik"
+      - "traefik.frontend.rule=Host:traefik-proxy.traefik.docker"
       - "traefik.port=8080"
-      - "traefik.frontend.passHostHeader=true"
 
 networks:
   ddstack:
