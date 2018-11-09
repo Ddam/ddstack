@@ -12,7 +12,7 @@ Here are some stacks of development made in Docker. Rather Web oriented she can 
 
 In this stacks, Traefik is used as a reverse proxy in order to be able to browse the different web applications. You will find below, the different urls of each service (with COMPOSE_PROJECT_NAME variable set to local). Add them to your favorites in your favorite browser ;)
 
-### Traefik
+### Proxy Stack
 
 | Service | Name | Frontend | Description |
 |:--------|:-----|:---------|:------------|
@@ -117,7 +117,7 @@ Examples :
 
 ### Documentations
 
-- [Traefik](doc/traefik.md)
+- [Proxy Stack](doc/proxy.md)
 - [Devops Stack](doc/devops.md)
 - [Storage Stack](doc/storage.md)
 - [Dataflow Stack](doc/dataflow.md)

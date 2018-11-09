@@ -5,16 +5,15 @@ services:
   traefik:
     container_name: ${COMPOSE_PROJECT_NAME}_traefik
     build:
-      context: ./traefik
+      context: proxy/traefik
       args:
         - TRAEFIK_VERSION=${TRAEFIK_VERSION}
     command: --debug=${TRAEFIK_DEBUG} --logLevel=${TRAEFIK_LOG_LEVEL}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./traefik/conf/traefik.toml:/etc/traefik/traefik.toml
-      - ./traefik/ssl/certs:/ssl/certs
-      - ./traefik/ssl/private:/ssl/private
-#      - ./traefik/acme.json:/etc/traefik/acme.json
+      - ./proxy/traefik/conf/traefik.toml:/etc/traefik/traefik.toml
+      - ./proxy/traefik/ssl:/etc/ssl
+#      - ./proxy/traefik/acme.json:/etc/traefik/acme.json
     ports:
       - 80:80
       - 443:443

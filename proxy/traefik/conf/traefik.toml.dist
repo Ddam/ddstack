@@ -40,8 +40,8 @@ defaultEntryPoints = ["http", "https"]
   address = ":443"
     [entryPoints.https.tls]
       [[entryPoints.https.tls.certificates]]
-      certFile = "/ssl/certs/traefik.cert.pem"
-      keyFile = "/ssl/private/traefik.key.pem"
+      certFile = "/etc/ssl/certs/traefik.cert.pem"
+      keyFile = "/etc/ssl/private/traefik.key.pem"
 
 ################################################################
 # Traefik logs configuration
@@ -141,25 +141,80 @@ defaultEntryPoints = ["http", "https"]
   # Docker server endpoint. Can be a tcp or a unix socket endpoint.
   #
   # Required
-  # Default: "unix:///var/run/docker.sock"
   #
-  # endpoint = "tcp://10.10.10.10:2375"
+  endpoint = "unix:///var/run/docker.sock"
 
-  # Default domain used.
+  # Default base domain used for the frontend rules.
   # Can be overridden by setting the "traefik.domain" label on a container.
   #
   # Optional
-  # Default: ""
   #
   domain = "docker"
 
-  # Expose containers by default in traefik
+  # Enable watch docker changes.
+  #
+  # Optional
+  #
+  watch = true
+
+  # Override default configuration template.
+  # For advanced users :)
+  #
+  # Optional
+  #
+  # filename = "docker.tmpl"
+
+  # Override template version
+  # For advanced users :)
+  #
+  # Optional
+  # - "1": previous template version (must be used only with older custom templates, see "filename")
+  # - "2": current template version (must be used to force template version when "filename" is used)
+  #
+  # templateVersion = 2
+
+  # Expose containers by default in Traefik.
+  # If set to false, containers that don't have `traefik.enable=true` will be ignored.
   #
   # Optional
   # Default: true
   #
   exposedByDefault = true
-  watch = true
+
+  # Use the IP address from the binded port instead of the inner network one.
+  #
+  # In case no IP address is attached to the binded port (or in case
+  # there is no bind), the inner network one will be used as a fallback.
+  #
+  # Optional
+  # Default: false
+  #
+  usebindportip = true
+
+  # Use Swarm Mode services as data provider.
+  #
+  # Optional
+  # Default: false
+  #
+  swarmMode = false
+
+  # Define a default docker network to use for connections to all containers.
+  # Can be overridden by the traefik.docker.network label.
+  #
+  # Optional
+  #
+  network = "traefik"
+
+  # Enable docker TLS connection.
+  #
+  # Optional
+  #
+  #  [docker.tls]
+  #  ca = "/etc/ssl/ca.crt"
+  #  cert = "/etc/ssl/docker.crt"
+  #  key = "/etc/ssl/docker.key"
+  #  insecureSkipVerify = true
+
 
 # Enable ACME (Let's Encrypt): automatic SSL.
 # [acme]

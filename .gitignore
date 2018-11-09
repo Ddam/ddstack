@@ -1,9 +1,10 @@
 .env
 docker-compose.override.yml
-traefik/ssl/*
-traefik/conf/traefik.toml
-!traefik/ssl/certs/.gitkeep
-!traefik/ssl/private/.gitkeep
+proxy/traefik/ssl/**
+proxy/traefik/conf/traefik.toml
+!proxy/traefik/ssl/ca/.gitkeep
+!proxy/traefik/ssl/certs/.gitkeep
+!proxy/traefik/ssl/private/.gitkeep
 storage/ftp/upload
 storage/redis/data/*
 !storage/redis/data/
