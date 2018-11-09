@@ -1,5 +1,5 @@
 
-# Devtools - Docker Stacks
+# DDStack - Docker Stacks
 
 Here are some stacks of development made in Docker. Rather Web oriented she can help during the development of a Web project :)
 
