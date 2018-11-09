@@ -18,6 +18,9 @@ services:
       - 80:80
       - 443:443
       - 14500:14500
+    networks:
+      - traefik
+      - ddstack
     labels:
       - "traefik.enable=true"
       - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.traefik.docker"
@@ -25,6 +28,7 @@ services:
       - "traefik.frontend.passHostHeader=true"
 
 networks:
-  default:
-    external:
-      name: traefik
+  ddstack:
+    name: ddstack
+  traefik:
+    name: traefik

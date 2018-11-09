@@ -9,6 +9,9 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
+    networks:
+      - traefik
+      - ddstack
     labels:
       - "traefik.enable=true"
       - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.portainer.docker"
@@ -29,6 +32,9 @@ services:
       - JENKINS_PASSWORD=${JENKINS_PASSWORD}
     ports:
       - 5000:5000
+    networks:
+      - traefik
+      - ddstack
     labels:
       - "traefik.enable=true"
       - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.jenkins.docker"
@@ -40,8 +46,3 @@ volumes:
     driver: local
   jenkins_data:
     driver: local
-
-networks:
-  default:
-    external:
-      name: traefik

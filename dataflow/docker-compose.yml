@@ -11,6 +11,9 @@ services:
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
       - RABBITMQ_VHOST=/
+    networks:
+      - traefik
+      - ddstack
     labels:
       - "traefik.enable=true"
       - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.rabbitmq.docker"
@@ -23,6 +26,9 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}_streamsets
     volumes:
       - sdc_data:/data:rw
+    networks:
+      - traefik
+      - ddstack
     labels:
       - "traefik.enable=true"
       - "traefik.frontend.rule=Host:${COMPOSE_PROJECT_NAME}.streamsets.docker"
@@ -34,8 +40,3 @@ volumes:
     driver: local
   sdc_data:
     driver: local
-
-networks:
-  default:
-    external:
-      name: traefik

@@ -74,8 +74,6 @@ In this stacks, Traefik is used as a reverse proxy in order to be able to browse
 - And then run the docker-compose
 
 	```bash
-	# Create traefik network if needed
-	docker network create traefik
 	make build
 	make up
 	```
