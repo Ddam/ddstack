@@ -11,3 +11,8 @@ storage/redis/data/*
 !storage/redis/data/default.txt
 elastic/logstash/pipeline/logstash.conf
 elastic/logstash/pipeline/logstash.yml
+app/symfony/**
+!app/symfony/.env.dist
+!app/symfony/docker
+!app/symfony/templates/index.html.twig
+!app/symfony/src/Controller/DefaultController.php

@@ -60,6 +60,12 @@ In this stacks, Traefik is used as a reverse proxy in order to be able to browse
 | [Logstash](https://www.elastic.co/products/logstash/) | logstash | - | Logstash is an open source, server-side data processing pipeline that ingests data from a multitude of sources simultaneously. |
 | [Logspout](https://hub.docker.com/r/bekt/logspout-logstash/) | logspout-logstash | - | Logspout is a log router for Docker containers that runs inside Docker. |
 
+### App Stack
+
+| Service | Name | Frontend | Description |
+|:--------|:-----|:---------|:------------|
+| [Symfony](https://symfony.com/) | sf_php | http://sf-app.traefik.docker | A Symfony 4 application mounted with a multi-stage Dockerfile. |
+
 ## Installation / Setup
 
 - Copy all dist file
@@ -112,6 +118,7 @@ Examples :
 	    restart: always
 	```
 - Change the Adminer theme
+- Use dev mode to Symfony app
 
 ### Documentations
 
@@ -121,3 +128,4 @@ Examples :
 - [Dataflow Stack](doc/dataflow.md)
 - [Tool Stack](doc/tool.md)
 - [Elastic Stack](doc/elastic.md)
+- [App Stack](doc/app.md)

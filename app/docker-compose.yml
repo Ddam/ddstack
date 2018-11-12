@@ -1,0 +1,35 @@
+version: '3.7'
+
+services:
+  sf_php:
+    container_name: ${COMPOSE_PROJECT_NAME}_sf_php
+    build:
+      context: app/symfony
+      target: build_php
+      dockerfile: docker/Dockerfile
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - ddstack
+
+  sf_apache:
+    container_name: ${COMPOSE_PROJECT_NAME}_sf_apache
+    build:
+      context: app/symfony
+      target: build_apache
+      dockerfile: docker/Dockerfile
+    depends_on:
+      - sf_php
+    environment:
+      - PHP_HANDLER_HOST=${HTTPD_PHP_HANDLER_HOST}
+    networks:
+      - traefik
+      - ddstack
+    ports:
+      - 8000:80
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=sf-app.traefik"
+      - "traefik.frontend.rule=Host:sf-app.traefik.docker"
+      - "traefik.port=80"
