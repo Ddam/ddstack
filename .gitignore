@@ -18,6 +18,8 @@ storage/redis/data/*
 # Elastica Stack
 elastic/logstash/pipeline/logstash.conf
 elastic/logstash/pipeline/logstash.yml
+
+# App Stack
 app/symfony/**
 !app/symfony/.env.dist
 !app/symfony/docker
