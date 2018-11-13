@@ -19,30 +19,6 @@ services:
     networks:
       - ddstack
 
-  adminer:
-    image: adminer:${ADMINER_VERSION}
-    container_name: ${COMPOSE_PROJECT_NAME}_adminer
-    networks:
-      - traefik
-      - ddstack
-    labels:
-      - "traefik.enable=true"
-      - "traefik.backend=adminer"
-      - "traefik.frontend.rule=Host:adminer.traefik.docker"
-      - "traefik.port=8080"
-
-  sqlpad:
-    image: sqlpad/sqlpad:${SQLPAD_VERSION}
-    container_name: ${COMPOSE_PROJECT_NAME}_sqlpad
-    networks:
-      - traefik
-      - ddstack
-    labels:
-      - "traefik.enable=true"
-      - "traefik.backend=sqlpad"
-      - "traefik.frontend.rule=Host:sqlpad.traefik.docker"
-      - "traefik.port=3000"
-
   # Redis
   redis:
     container_name: ${COMPOSE_PROJECT_NAME}_redis
@@ -54,31 +30,6 @@ services:
     volumes:
       - ./storage/redis/data:/data
     command: redis-server --requirepass ${REDIS_PASSWORD}
-    networks:
-      - ddstack
-
-  redis-commander:
-    image: rediscommander/redis-commander:${REDIS_COMMANDER_VERSION}
-    container_name: ${COMPOSE_PROJECT_NAME}_redis-commander
-    environment:
-      - REDIS_HOSTS=${REDIS_URI}
-    networks:
-      - traefik
-      - ddstack
-    labels:
-      - "traefik.enable=true"
-      - "traefik.backend=redis-commander"
-      - "traefik.frontend.rule=Host:redis-commander.traefik.docker"
-      - "traefik.port=8081"
-
-  redis-memtier_benchmark:
-    container_name: ${COMPOSE_PROJECT_NAME}_redis-memtier_benchmark
-    build:
-      context: storage/redis-memtier_benchmark
-      args:
-        - REDIS_MEMTIER_VERSION=${REDIS_MEMTIER_VERSION}
-        - REDIS_SERVER=${REDIS_SERVER}
-        - REDIS_PASSWORD=${REDIS_PASSWORD}
     networks:
       - ddstack
 
