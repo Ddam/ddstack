@@ -1,16 +1,25 @@
+# Global
 .env
 docker-compose.override.yml
+
+#Proxy Stack
 proxy/traefik/ssl/**
 proxy/traefik/conf/traefik.toml
 !proxy/traefik/ssl/ca/.gitkeep
 !proxy/traefik/ssl/certs/.gitkeep
 !proxy/traefik/ssl/private/.gitkeep
+
+# Storage Stack
 storage/ftp/upload
 storage/redis/data/*
 !storage/redis/data/
 !storage/redis/data/default.txt
+
+# Elastica Stack
 elastic/logstash/pipeline/logstash.conf
 elastic/logstash/pipeline/logstash.yml
+
+# App Stack
 app/symfony/**
 !app/symfony/.env.dist
 !app/symfony/docker
