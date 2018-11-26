@@ -18,14 +18,14 @@ services:
       - "traefik.frontend.rule=Host:portainer.traefik.docker"
       - "traefik.port=9000"
 
-  jenkins:
-    container_name: ${COMPOSE_PROJECT_NAME}_jenkins
+  jenkins_master:
+    container_name: ${COMPOSE_PROJECT_NAME}_jenkins_master
     build:
-      context: ./devops/jenkins
+      context: ./devops/jenkins/master
       args:
         - JENKINS_VERSION=${JENKINS_VERSION}
     volumes:
-      - jenkins_data:/var/jenkins_home
+      - ./devops/jenkins/master/data:/var/jenkins_home
     environment:
       - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
       - JENKINS_USER=${JENKINS_USER}
@@ -60,6 +60,4 @@ services:
 
 volumes:
   portainer_data:
-    driver: local
-  jenkins_data:
     driver: local

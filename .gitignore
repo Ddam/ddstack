@@ -37,3 +37,4 @@ app/symfony/**
 devops/ansistrano/conf/hosts
 devops/ansistrano/playbooks/symfony/hosts.ini
 devops/ansistrano/playbooks/symfony/deploy.retry
+devops/jenkins/master/data
