@@ -24,6 +24,7 @@ In this stacks, Traefik is used as a reverse proxy in order to be able to browse
 |:--------|:-----|:---------|:------------|
 | [Portainer](https://portainer.io/) | portainer | http://portainer.traefik.docker/ | Portainer is an open-source lightweight management ui which allows you to easily manage your docker hosts or swarm clusters. |
 | [Jenkins (PHP Docker build)](https://jenkins.io/) | jenkins | http://jenkins.traefik.docker/ | As an extensible automation server, Jenkins can be used as a simple CI server or turned into the continuous delivery hub for any project. |
+| [Ansistrano](https://github.com/ansistrano/deploy/) | ansistrano | - | ansistrano.deploy and ansistrano.rollback are Ansible roles to easily manage the deployment process for scripting applications such as PHP, Python and Ruby. It's an Ansible port for Capistrano. |
  
 ### Storage Stack
 
@@ -75,6 +76,8 @@ In this stacks, Traefik is used as a reverse proxy in order to be able to browse
 	cp traefik/conf/traefik.toml.dist traefik/conf/traefik.toml
 	cp elastic/logstash/pipeline/logstash.conf.dist elastic/logstash/pipeline/logstash.conf
 	cp elastic/logstash/pipeline/logstash.yml.dist elastic/logstash/pipeline/logstash.yml
+	cp devops/ansistrano/conf/hosts.dist devops/ansistrano/conf/hosts
+	cp devops/ansistrano/playbooks/symfony/hosts.ini.dist devops/ansistrano/playbooks/symfony/hosts.ini
 	```
 - You have to edit some variable in `.env` file.
 - And then run the docker-compose
@@ -119,6 +122,7 @@ Examples :
 	```
 - Change the Adminer theme
 - Use dev mode to Symfony app
+- Deploy Ansistrano
 
 ### Documentations
 

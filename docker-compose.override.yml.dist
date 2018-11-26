@@ -29,3 +29,7 @@ services:
 #  sf_apache:
 #    volumes:
 #      - ./app/symfony/public:/app/public
+
+#  ansistrano:
+#    volumes:
+#      - ./app/symfony:/apps/symfony

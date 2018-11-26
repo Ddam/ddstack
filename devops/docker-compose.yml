@@ -41,6 +41,23 @@ services:
       - "traefik.frontend.rule=Host:jenkins.traefik.docker"
       - "traefik.port=8080"
 
+  ansistrano:
+    container_name: ${COMPOSE_PROJECT_NAME}_ansistrano
+    build:
+      context: devops/ansistrano
+    volumes:
+      - ./devops/ansistrano/conf/hosts:/etc/ansible/hosts
+      - ./devops/ansistrano/playbooks:/etc/ansible/playbooks
+    environment:
+      - ANSISTRANO_WEBSERVERS=${ANSISTRANO_WEBSERVERS}
+    healthcheck:
+      test: ansible all -m ping
+      interval: 2s
+      timeout:  2s
+      retries:  3
+    networks:
+      - ddstack
+
 volumes:
   portainer_data:
     driver: local

@@ -10,7 +10,7 @@ STORAGE_COMPOSE:=-f $(ROOT_DIR)/storage/docker-compose.yml
 TOOL_COMPOSE:=-f $(ROOT_DIR)/tool/docker-compose.yml
 ELASTIC_COMPOSE:=-f $(ROOT_DIR)/elastic/docker-compose.yml
 APP_COMPOSE:=-f $(ROOT_DIR)/app/docker-compose.yml
-DEVOPS_SERVICES=portainer jenkins
+DEVOPS_SERVICES=portainer jenkins ansistrano
 DATAFLOW_SERVICES=rabbitmq streamsets
 STORAGE_SERVICES=mysql redis sftp-server
 TOOL_SERVICES=wireshark mailcatcher adminer sqlpad redis-commander redis-memtier_benchmark
@@ -20,6 +20,7 @@ APP_SERVICES=$(SYMFONY_SERVICES)
 UID:=$(shell id -u)
 GID:=$(shell id -g)
 SF_DIR:=$(ROOT_DIR)/app/symfony
+LOCAL_IP:=$(shell ip a show `ip route show default|awk '/default/ {print $$5}'`|sed -En 's/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p')
 
 # Global
 build:
@@ -166,3 +167,13 @@ sf-install:
 	cp -Rp $(ROOT_DIR)/app/tmp/. $(SF_DIR)/.
 	rm -Rf $(ROOT_DIR)/app/tmp
 	docker container run --rm -it -u $(UID):$(GID) -v $(SF_DIR):/app -w /app node:10-alpine yarn install
+
+ansistrano-local-link:
+	printf "\n[local_machine]\n$(LOCAL_IP) ansible_user=root\n" >> $(ROOT_DIR)/devops/ansistrano/conf/hosts
+	printf "\n[local_machine]\n$(LOCAL_IP) ansible_user=root\n" >> $(ROOT_DIR)/devops/ansistrano/playbooks/symfony/hosts.ini
+
+ansistrano-deploy:
+	docker exec -t --user=root $(COMPOSE_PROJECT_NAME)_ansistrano ansible-playbook \
+		-i /etc/ansible/playbooks/$(playbook)/hosts.ini \
+		-e ansistrano_deploy_to=$(ANSISTRANO_LOCAL_DEPLOY_PATH) \
+		/etc/ansible/playbooks/$(playbook)/deploy.yml

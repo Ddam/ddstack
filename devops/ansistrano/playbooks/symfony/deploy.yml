@@ -1,0 +1,14 @@
+---
+-
+    hosts:
+        - webservers
+        - local_machine
+    vars:
+        ansistrano_deploy_from: "/apps/symfony/"
+        ansistrano_keep_releases: 3
+        ansistrano_shared_paths:
+            - var/log
+        ansistrano_shared_files:
+            - .env
+    roles:
+        - ansistrano.deploy
