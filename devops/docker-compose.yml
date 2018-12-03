@@ -26,6 +26,7 @@ services:
         - JENKINS_VERSION=${JENKINS_VERSION}
     volumes:
       - ./devops/jenkins/master/data:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
       - JENKINS_USER=${JENKINS_USER}
@@ -40,6 +41,25 @@ services:
       - "traefik.backend=jenkins"
       - "traefik.frontend.rule=Host:jenkins.traefik.docker"
       - "traefik.port=8080"
+
+  jenkins_dind_slave:
+    container_name: ${COMPOSE_PROJECT_NAME}_jenkins_dind_slave
+    build:
+      context: ./devops/jenkins/slaves/dind-ssh-agent
+      args:
+        - JENKINS_AGENT_HOME=${JENKINS_AGENT_HOME}
+    privileged: true
+    volumes:
+      - ./devops/jenkins/slaves/dind-ssh-agent/data:/home/jenkins
+    environment:
+      - JENKINS_AGENT_HOME=${JENKINS_AGENT_HOME}
+    ports:
+      - ${FTP_PORT}:22
+      - 2375:2375
+    networks:
+      ddstack:
+        aliases:
+          - jenkins-dind-slave
 
   ansistrano:
     container_name: ${COMPOSE_PROJECT_NAME}_ansistrano
